@@ -40,5 +40,11 @@ jobs:
       - name: Run Testsuite
         run: vendor/bin/phpunit --stop-on-failure --testsuite All
 
+      - name: Prepare Laravel Application for Browser tests
+        run: |
+          rm .env.dusk.local
+          php artisan key:generate
+          php artisan config:clear
+
       - name: Run Browser Tests
         run:  php artisan dusk
