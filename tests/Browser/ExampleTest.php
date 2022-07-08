@@ -18,8 +18,8 @@ class ExampleTest extends DuskTestCase
      */
     public function testBasicExample()
     {
-        dump(env('environment'));
-        dump(env('DB_DATABASE'));
+        echo(env('APP_ENV')."\n");
+        echo(env('DB_DATABASE')."\n");
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
                 ->assertSee('Laravel')
