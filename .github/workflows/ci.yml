@@ -27,7 +27,7 @@ jobs:
       - name: Install node dependencies
         run: |
           npm ci
-          npm build
+          npm run build
 
       - name: Prepare Laravel Application
         run: |
