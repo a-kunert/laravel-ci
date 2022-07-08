@@ -17,6 +17,8 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       selenium:
         image: selenium/standalone-chrome
+        volumes:
+          - '/dev/shm:/dev/shm'
 
     steps:
       - uses: actions/checkout@v1
@@ -43,5 +45,6 @@ jobs:
 
       - name: Run Browser Tests
         run:  |
+          curl http://selenium:4444/wd/hub
           php artisan config:clear
           php artisan dusk --stop-on-failure
