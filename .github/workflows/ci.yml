@@ -33,6 +33,7 @@ jobs:
 
       - name: Prepare Laravel Application
         run: |
+          rm .env.dusk.local
           cp .env.ci .env
           php artisan key:generate
           cat .env
@@ -42,9 +43,8 @@ jobs:
 
       - name: Prepare Laravel Application for Browser tests
         run: |
-          rm .env.dusk.local
-          php artisan key:generate
+          php artisan config:cache
           php artisan config:clear
 
       - name: Run Browser Tests
-        run:  php artisan dusk
+        run:  php artisan dusk --stop-on-failure
