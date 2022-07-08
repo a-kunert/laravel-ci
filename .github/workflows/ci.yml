@@ -45,7 +45,5 @@ jobs:
 
       - name: Run Browser Tests
         run:  |
-          curl http://selenium:4444/wd/hub
-          php artisan config:clear
-          nohup php artisan serve > /dev/null 2>&1
+          php artisan config:cache
           php artisan dusk --stop-on-failure
