@@ -18,6 +18,7 @@ class ExampleTest extends DuskTestCase
      */
     public function testBasicExample()
     {
+        $this->assertTrue(true);
         echo(env('APP_ENV')."\n");
         echo(env('DB_DATABASE')."\n");
         $this->browse(function (Browser $browser) {
