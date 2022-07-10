@@ -1,0 +1,46 @@
+# For more information: https://laravel.com/docs/sail
+version: '3'
+services:
+    laravel.test:
+        image: ci-runtime
+        build:
+          context: ./docker/8.1
+          dockerfile: ci.dockerfile
+        ports:
+            - '80:80'
+        networks:
+            - kbd
+        depends_on:
+            - mysql
+            - selenium
+      #  working_dir: /var/www/html
+        volumes:
+          - ./:/var/www/html
+#        command: tail -f /dev/null
+    mysql:
+        image: 'mysql:5.7'
+        ports:
+            - '33306:3306'
+        environment:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: testing
+        volumes:
+            - 'kbd-mysql:/var/lib/mysql'
+        networks:
+            - kbd
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-p=password"]
+            retries: 3
+            timeout: 5s
+    selenium:
+        image: 'selenium/standalone-chrome'
+        volumes:
+            - '/dev/shm:/dev/shm'
+        networks:
+            - kbd
+networks:
+    kbd:
+        driver: bridge
+volumes:
+    kbd-mysql:
+        driver: local
