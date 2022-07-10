@@ -45,6 +45,5 @@ jobs:
 
       - name: Run Browser Tests
         run:  |
-          php artisan config:cache
           php artisan serve &
           php artisan dusk --stop-on-failure
