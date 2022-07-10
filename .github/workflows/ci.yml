@@ -43,6 +43,9 @@ jobs:
       - name: Run Testsuite
         run: vendor/bin/phpunit --stop-on-failure --testsuite All
 
+      - name: Start Server
+        run: php artisan serve &
+
       - name: Run Browser Tests
         run:  |
           php artisan config:cache
