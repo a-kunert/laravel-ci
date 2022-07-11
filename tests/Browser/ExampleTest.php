@@ -8,7 +8,7 @@ use Tests\DuskTestCase;
 
 class ExampleTest extends DuskTestCase
 {
-//    use DatabaseMigrations;
+    use DatabaseMigrations;
 
     /**
      * A basic browser test example.
@@ -17,10 +17,6 @@ class ExampleTest extends DuskTestCase
      */
     public function testBasicExample()
     {
-        dump(env('APP_ENV'));
-        dump(env('DB_DATABASE'));
-        dump(env('DUSK_DRIVER_URL'));
-        dump(env('APP_URL'));
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
                 ->assertSee('Laravel')
