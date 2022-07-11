@@ -36,7 +36,7 @@ RUN apt-get update \
 #    && apt-get update \
     && apt-get install -y  \
         php8.1-cli  \
-        php8.1-dev \
+#        php8.1-dev \
         php8.1-pgsql  \
         php8.1-sqlite3  \
         php8.1-gd \
@@ -49,15 +49,15 @@ RUN apt-get update \
         php8.1-bcmath  \
         php8.1-soap \
         php8.1-intl  \
-        php8.1-readline \
+#        php8.1-readline \
         php8.1-ldap \
-        php8.1-msgpack  \
-        php8.1-igbinary  \
+#        php8.1-msgpack  \
+#        php8.1-igbinary  \
         php8.1-redis  \
-        php8.1-swoole \
-        php8.1-memcached  \
-        php8.1-pcov  \
-        php8.1-xdebug \
+#        php8.1-swoole \
+#        php8.1-memcached  \
+#        php8.1-pcov  \
+#        php8.1-xdebug \
     && php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer \
     && curl -sLS https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
     && apt-get install -y nodejs \
