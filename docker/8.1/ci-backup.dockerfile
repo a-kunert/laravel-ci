@@ -49,3 +49,9 @@ RUN npm install -g yarn
 
 # goss
 RUN curl -fsSL https://goss.rocks/install | GOSS_VER=v${GOSS_VERSION} sh
+
+RUN echo "[PHP]\nvariables_order = EGPCS" > /etc/php/8.1/cli/conf.d/99-local.ini
+
+# EXPOSE 8000
+WORKDIR /var/www/html
+ENTRYPOINT ["php","artisan","serve","--host=0.0.0.0","--port=80"]

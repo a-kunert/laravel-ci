@@ -5,7 +5,8 @@ services:
         image: ci-runtime
         build:
           context: ./docker/8.1
-          dockerfile: ci.dockerfile
+#          dockerfile: ci.dockerfile
+          dockerfile: ci-backup.dockerfile
         ports:
             - '80:80'
         networks:
