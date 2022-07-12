@@ -28,7 +28,15 @@ RUN apt-get install -y \
     php8.1-imap \
     php8.1-phpdbg \
     php8.1-bz2 \
-    php8.1-redis
+    php8.1-redis \
+    mysql-client \
+    git  \
+    && curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install -y nodejs  \
+    && npm install -g yarn \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # composer
 ENV COMPOSER_HOME=/composer
@@ -36,19 +44,6 @@ ENV PATH=./vendor/bin:/composer/vendor/bin:/root/.yarn/bin:/usr/local/sbin:/usr/
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# mysql client
-RUN apt-get install -y mysql-client
-
-# git
-RUN apt-get install -y git
-
-# node and yarn
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y nodejs
-RUN npm install -g yarn
-
-# goss
-RUN curl -fsSL https://goss.rocks/install | GOSS_VER=v${GOSS_VERSION} sh
 
 RUN echo "[PHP]\nvariables_order = EGPCS" > /etc/php/8.1/cli/conf.d/99-local.ini
 
