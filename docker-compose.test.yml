@@ -2,6 +2,7 @@
 version: '3'
 services:
     laravel.test:
+        hostname: testrunner
         image: ci-runtime
         build:
           context: ./docker/8.1
