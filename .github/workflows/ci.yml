@@ -1,5 +1,5 @@
+name: Continous testing
 on: push
-name: CI
 
 jobs:
   phpunit:
