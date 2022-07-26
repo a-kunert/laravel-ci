@@ -15,13 +15,13 @@ jobs:
       - name: Check Out Repo
         uses: actions/checkout@v2
 
-#      - name: Cache Docker Layers
-#        uses: actions/cache@v2
-#        with:
-#          path: /tmp/.buildx-cache
-#          key: ${{ runner.os }}-buildx-${{ github.sha }}
-#          restore-keys: |
-#            ${{ runner.os }}-buildx-
+      - name: Cache Docker Layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
 
       - name: Set up Docker Buildx
         id: buildx
@@ -42,11 +42,17 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           target: testing
           tags: ${{ env.TEST_TAG }}
-#          cache-from: type=local,src=/tmp/.buildx-cache
-#          cache-to: type=local,dest=/tmp/.buildx-cache
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: Run Docker Testing Environment
         run: docker-compose -f ./docker/testing/docker-compose.yml up -d
+
+      - name: Check the env
+        run: docker-compose -f ./docker/testing/docker-compose.yml exec -T laravel.test cat .env
+
+      - name: Check the db
+        run: docker-compose -f ./docker/testing/docker-compose.yml exec -T mysql mysql -u test -p password
 
       - name: Run Phpunit Test config
         run: docker-compose -f ./docker/testing/docker-compose.yml exec -T laravel.test php artisan test --stop-on-failure --filter "test_the_application_returns_a_successful_response"
@@ -74,7 +80,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           target: production
           tags: ${{ steps.meta.outputs.tags }}
-#          cache-from: type=local,src=/tmp/.buildx-cache
-#          cache-to: type=local,dest=/tmp/.buildx-cache
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
 
