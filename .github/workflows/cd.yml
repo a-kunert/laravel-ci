@@ -40,7 +40,7 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           target: testing
-          tags: ${{TEST_TAG}}
+          tags: ${{ env.TEST_TAG }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
