@@ -39,7 +39,7 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           target: production
-          tag: aaronkunert/laravel-app:testing
+          tags: aaronkunert/laravel-app:testing
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           push: true
