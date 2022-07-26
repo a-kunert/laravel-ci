@@ -38,6 +38,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
+          load: true
           builder: ${{ steps.buildx.outputs.name }}
           target: testing
           tags: ${{ env.TEST_TAG }}
@@ -45,7 +46,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: Run Docker Testing Environment
-        run: docker-compose -f ./docker/testing/docker-compose.yml up
+        run: docker-compose -f ./docker/testing/docker-compose.yml up -d
 
       - name: Run Phpunit
         run: docker-compose -f ./docker/testing/docker-compose.yml exec laravel.test php artisan test --stop-on-failure --testsuite All
