@@ -3,17 +3,19 @@ on:
   push:
     branches: [ main ]
 
+env:
+  TEST_TAG: myapp:test
+
 jobs:
-  build:
+  build-test-push:
 
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Check Out Repo
         uses: actions/checkout@v2
 
-      - name: Cache Docker layers
+      - name: Cache Docker Layers
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
@@ -31,89 +33,44 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Build
-        id: docker_build
+      - name: Build for Testing
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
+          target: testing
+          tags: ${{TEST_TAG}}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+
+      - name: Run Docker Testing Environment
+        run: docker-compose up -f ./docker/testing/docker-compose.yml
+
+      - name: Run Phpunit
+        run: docker-compose exec laravel.test php artisan test --stop-on-failure --testsuite All
+
+      - name: Run Browser Tests
+        run: docker-compose exec laravel.test php artisan dusk  --stop-on-failure
+
+      - name: Get Docker Tags
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            aaronkunert/laravel-app
+          tags: |
+            type=ref,event=push
+
+      - name: Build and Push
         uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           target: production
-          tags: aaronkunert/laravel-app:testing
+          tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-          push: true
-
-  test:
-
-    runs-on: ubuntu-latest
-
-    container:
-      image: aaronkunert/laravel-app:testing
-      credentials:
-        username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      options: --hostname laravel.test
-
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: testing
-        ports:
-          - 33306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-      selenium:
-        image: selenium/standalone-chrome
-        volumes:
-          - '/dev/shm:/dev/shm'
-
-    steps:
-
-      - name: Copy env
-        run: cp ./docker/testing/.env.ci .env
-
-      - name: Prepare Application
-        run: php artisan key:generate
-
-      - name: Unit and Feature Tests
-        run: php artisan test --stop-on-failure --testsuite All
-
-      - name: Browser Tests
-        run: php artisan dusk --stop-on-failure
 
 
-  push:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-      - name: Set latest tag
-        uses: akhilerm/tag-push-action@v2.0.0
-        with:
-          src: aaronkunert/laravel-app:testing
-          dst: aaronkunert/laravel-app:latest
-
-      - name: Extract tag name
-        id: tag
-        uses: actions/github-script@0.2.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            return context.payload.ref.replace(/\/refs\/tags\//, '');
-
-      - name: Echo Tag Name
-        run: echo ${{ steps.tag.outputs.result }}
-
-      - name: Set specific tag
-        if: ${{ steps.tag.outputs.result }}
-        uses: akhilerm/tag-push-action@v2.0.0
-        with:
-          src: aaronkunert/laravel-app:latest
-          dst: aaronkunert/laravel-app:${{steps.tag.outputs.result}}

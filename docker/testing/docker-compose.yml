@@ -1,0 +1,30 @@
+version: '3'
+services:
+    laravel.test:
+        image: '${TEST_TAG}'
+        networks:
+            - test
+        depends_on:
+            - mysql
+            - selenium
+    mysql:
+        image: 'mysql/mysql-server:8.0'
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: testing
+        networks:
+            - test
+        healthcheck:
+            test: [ "CMD", "mysqladmin", "ping"]
+            interval: 10s
+            retries: 3
+            timeout: 5s
+    selenium:
+        image: 'selenium/standalone-chrome'
+        volumes:
+            - '/dev/shm:/dev/shm'
+        networks:
+            - test
+networks:
+    test:
+        driver: bridge
