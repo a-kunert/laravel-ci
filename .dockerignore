@@ -1,0 +1,12 @@
+/.idea
+/.github
+/.git
+/.vscode
+/node_modules
+/public/build
+/public/hot
+/bootstrap/cache/*
+/vendor
+/storage/app
+/.env*
+/.git*

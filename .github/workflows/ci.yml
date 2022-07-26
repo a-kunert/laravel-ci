@@ -37,7 +37,7 @@ jobs:
       - name: Prepare Laravel Application
         run: |
           rm -f .env.dusk.*
-          cp .env.ci .env
+          cp ./docker/testing/.env.ci .env
           php artisan key:generate
           cat .env
 
