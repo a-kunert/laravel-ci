@@ -2,7 +2,8 @@ version: '3'
 services:
     laravel.test:
         image: '${TEST_TAG}'
-        tty: true
+        ports:
+            - '80:80'
         networks:
             - test
         depends_on:
@@ -11,12 +12,17 @@ services:
     mysql:
         image: 'mysql/mysql-server:8.0'
         environment:
+            MYSQL_ROOT_HOST: "%"
             MYSQL_ROOT_PASSWORD: password
             MYSQL_DATABASE: testing
+            MYSQL_USER: test
+            MYSQL_PASSWORD: password
+        ports:
+            - '3306:3306'
         networks:
             - test
         healthcheck:
-            test: [ "CMD", "mysqladmin", "ping"]
+            test: [ "CMD", "mysqladmin", "ping" ]
             interval: 10s
             retries: 3
             timeout: 5s

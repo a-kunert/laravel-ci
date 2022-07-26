@@ -21,7 +21,9 @@ RUN install-php-extensions  \
     intl  \
     ldap  \
     memcached  \
-    msgpack  \
+    msgpack \
+    mysqli \
+    pdo_mysql \
     pgsql  \
     redis  \
     soap  \
