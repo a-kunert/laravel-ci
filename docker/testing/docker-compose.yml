@@ -2,6 +2,7 @@ version: '3'
 services:
     laravel.test:
         image: '${TEST_TAG}'
+        tty: true
         networks:
             - test
         depends_on:
