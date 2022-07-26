@@ -49,10 +49,10 @@ jobs:
         run: docker-compose -f ./docker/testing/docker-compose.yml up -d
 
       - name: Run Phpunit
-        run: docker-compose -f ./docker/testing/docker-compose.yml exec laravel.test php artisan test --stop-on-failure --testsuite All
+        run: docker-compose -f ./docker/testing/docker-compose.yml exec -T laravel.test php artisan test --stop-on-failure --testsuite All
 
       - name: Run Browser Tests
-        run: docker-compose -f ./docker/testing/docker-compose.yml exec laravel.test php artisan dusk  --stop-on-failure
+        run: docker-compose -f ./docker/testing/docker-compose.yml exec -T laravel.test php artisan dusk  --stop-on-failure
 
       - name: Get Docker Tags
         id: meta
