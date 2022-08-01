@@ -20,7 +20,7 @@ services:
         networks:
             - test
         healthcheck:
-            test: ["CMD", "mysqladmin", "ping", "-p${MYSQL_ROOT_PASSWORD}"]
+            test: ["CMD", "mysqladmin", "ping", "-prootpw"]
             interval: 10s
             retries: 3
             timeout: 5s

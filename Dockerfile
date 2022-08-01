@@ -49,8 +49,6 @@ EXPOSE 80
 FROM source as testing
 COPY ./docker/testing/.env.ci .env
 RUN php artisan key:generate
-RUN php artisan config:clear
-RUN php artisan config:cache
 CMD ["/usr/bin/supervisord","-n","-c","/etc/supervisord.conf"]
 
 

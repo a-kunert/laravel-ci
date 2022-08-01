@@ -34,7 +34,7 @@ class ExampleTest extends DuskTestCase
                 ->type('#password',"2")
                 ->type('#password_confirmation',"3")
                 ->press('button[type="submit"]')
-                ->pause(100)
+                ->pause(300)
                 ->assertSee('does not match')
                 ->screenshot('SeeValidationError');
 
