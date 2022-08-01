@@ -48,9 +48,9 @@ jobs:
       - name: Run Docker Testing Environment
         run: docker-compose -f ./docker/testing/docker-compose.yml up -d
 
-      - name: Sleep for 10 seconds
-        run: sleep 10s
-        shell: bash
+#      - name: Sleep for 10 seconds
+#        run: sleep 10s
+#        shell: bash
 
 #      - name: Check the env
 #        run: docker-compose -f ./docker/testing/docker-compose.yml exec -T laravel.test cat .env
