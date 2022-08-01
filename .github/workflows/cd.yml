@@ -48,6 +48,7 @@ jobs:
       - name: Run Docker Testing Environment
         run: docker-compose -f ./docker/testing/docker-compose.yml up -d
 
+        # This time is needed to get db ready (for some reason my healthcheck is not sufficient)
       - name: Sleep for 12 seconds
         run: sleep 12s
         shell: bash
@@ -64,24 +65,24 @@ jobs:
       - name: Run Browser Tests
         run: docker-compose -f ./docker/testing/docker-compose.yml exec -T laravel.test php artisan dusk  --stop-on-failure
 
-#      - name: Get Docker Tags
-#        id: meta
-#        uses: docker/metadata-action@v4
-#        with:
-#          images: |
-#            aaronkunert/laravel-app
-#          tags: |
-#            type=ref,event=push
-#
-#      - name: Build and Push
-#        uses: docker/build-push-action@v3
-#        with:
-#          context: .
-#          file: ./Dockerfile
-#          builder: ${{ steps.buildx.outputs.name }}
-#          target: production
-#          tags: ${{ steps.meta.outputs.tags }}
-#          cache-from: type=local,src=/tmp/.buildx-cache
-#          cache-to: type=local,dest=/tmp/.buildx-cache
+      - name: Get Docker Tags
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            aaronkunert/laravel-app
+          tags: |
+            type=ref,event=push
+
+      - name: Build and Push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
+          target: production
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
 
