@@ -46,7 +46,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: Run Docker Testing Environment
-        run: docker-compose -f ./docker/testing/docker-compose.yml up
+        run: docker-compose -f ./docker/testing/docker-compose.yml up -d
 
       - name: Check the env
         run: docker-compose -f ./docker/testing/docker-compose.yml exec -T laravel.test cat .env
