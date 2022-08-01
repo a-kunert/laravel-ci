@@ -72,7 +72,8 @@ jobs:
           images: |
             aaronkunert/laravel-app
           tags: |
-            type=ref,event=push
+            type=ref,event=tag
+            type=raw,value=latest
 
       - name: Build and Push
         uses: docker/build-push-action@v3
