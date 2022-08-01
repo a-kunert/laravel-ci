@@ -58,11 +58,8 @@ jobs:
       - name: Check the db
         run: docker-compose -f ./docker/testing/docker-compose.yml exec -T mysql mysql -u test -ppassword -e "SHOW DATABASES;"
 
-      - name: Run Phpunit Test config
-        run: docker-compose -f ./docker/testing/docker-compose.yml exec -T laravel.test php artisan test --stop-on-failure --filter "test_the_application_returns_a_successful_response"
-
       - name: Run Phpunit
-        run: docker-compose -f ./docker/testing/docker-compose.yml exec -T laravel.test php artisan test --stop-on-failure --testsuite All
+        run: docker-compose -f ./docker/testing/docker-compose.yml exec -T laravel.test php artisan test --stop-on-failure
 
       - name: Run Browser Tests
         run: docker-compose -f ./docker/testing/docker-compose.yml exec -T laravel.test php artisan dusk  --stop-on-failure

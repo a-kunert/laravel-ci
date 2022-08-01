@@ -2,6 +2,7 @@ version: '3'
 services:
     laravel.test:
         image: '${TEST_TAG}'
+        hostname: laravel.test
         ports:
             - '80:80'
         networks:
