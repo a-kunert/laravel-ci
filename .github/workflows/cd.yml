@@ -49,7 +49,7 @@ jobs:
         run: docker-compose -f ./docker/testing/docker-compose.yml up -d
 
       - name: Sleep for 10 seconds
-        run: sleep 10s
+        run: sleep 5s
         shell: bash
 
 #      - name: Check the env
