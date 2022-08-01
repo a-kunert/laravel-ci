@@ -46,7 +46,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: Clear everything
-        run: docker-compose rm -v
+        run: docker-compose -f ./docker/testing/docker-compose.yml rm -v
 
       - name: Run Docker Testing Environment
         run: docker-compose -f ./docker/testing/docker-compose.yml up
