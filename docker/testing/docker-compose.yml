@@ -1,14 +1,14 @@
 version: '3'
 services:
-#    laravel.test:
-#        image: '${TEST_TAG}'
-#        ports:
-#            - '80:80'
-#        networks:
-#            - test
-#        depends_on:
-#            - mysql
-#            - selenium
+    laravel.test:
+        image: '${TEST_TAG}'
+        ports:
+            - '80:80'
+        networks:
+            - test
+        depends_on:
+            - mysql
+            - selenium
     mysql:
         image: 'mysql:8'
         environment:
@@ -19,16 +19,16 @@ services:
         networks:
             - test
         healthcheck:
-            test: [ "CMD", "mysql", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD","-e", '"SHOW DATABASES;"']
+            test: [ "CMD", "mysql", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}","-e",'"SHOW DATABASES;"']
             interval: 10s
             retries: 3
             timeout: 5s
-#    selenium:
-#        image: 'selenium/standalone-chrome'
-#        volumes:
-#            - '/dev/shm:/dev/shm'
-#        networks:
-#            - test
+    selenium:
+        image: 'selenium/standalone-chrome'
+        volumes:
+            - '/dev/shm:/dev/shm'
+        networks:
+            - test
 networks:
     test:
         driver: bridge
