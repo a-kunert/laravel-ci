@@ -9,6 +9,8 @@ use Tests\TestCase;
 
 class CommentControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function if_no_content_is_given_the_validation_will_fail()
     {
