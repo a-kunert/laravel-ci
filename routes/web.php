@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -16,10 +18,14 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', [HomeController::class,'index']);
+Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth','verified'])->group(function() {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/comments',[CommentController::class,'store'])->name('comment.store');
+    Route::post('/comments-via-queue',[CommentController::class,'storeViaQueue'])->name('comment.store.queued');
 
-require __DIR__.'/auth.php';
+});
+
+
+require __DIR__ . '/auth.php';
