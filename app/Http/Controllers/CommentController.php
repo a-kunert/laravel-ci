@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\StoreComment;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
@@ -10,14 +11,13 @@ class CommentController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate(['content' => 'required']);
-        $user = auth()->user();
-        $user->comments()->create($data);
+        StoreComment::dispatchSync(auth()->user(), $request->validate(['content' => 'required']));
         return redirect()->back();
     }
 
     public function storeViaQueue(Request $request)
     {
-        $data = $request->validate(['content' => 'required']);
+        StoreComment::dispatch(auth()->user(), $request->validate(['content' => 'required']));
+        return redirect()->back();
     }
 }
