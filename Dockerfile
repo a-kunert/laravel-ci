@@ -46,6 +46,7 @@ RUN composer dump-autoload -o  \
 EXPOSE 80
 
 
+
 FROM source as testing
 COPY ./docker/testing/.env.ci .env
 RUN php artisan key:generate
@@ -53,6 +54,8 @@ CMD ["/usr/bin/supervisord","-n","-c","/etc/supervisord.conf"]
 
 
 FROM source as production
+# Extend supervisor config
+RUN cat ./docker/production/horizon.supervisord.conf >> /etc/supervisord.conf
 CMD ["/usr/bin/supervisord","-n","-c","/etc/supervisord.conf"]
 
 

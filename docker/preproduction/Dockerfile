@@ -23,8 +23,9 @@ RUN install-php-extensions  \
     memcached  \
     msgpack \
     mysqli \
+    pcntl \
     pdo_mysql \
-    pgsql  \
+    pgsql \
     redis  \
     soap  \
     swoole  \
